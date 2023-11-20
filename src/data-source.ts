@@ -12,7 +12,7 @@ const AppDataSource = new DataSource({
 	username: "root",
 	password: "root",
 	database: "instagram_softex",
-	synchronize: false,
+	synchronize: true,
 	logging: true,
 	entities: [User, Comment, Like, Post],
 	subscribers: [],
