@@ -7,7 +7,7 @@ class UserController {
 	public async createNewUser(req: Request, res: Response) {
 		try {
 			const userData = req.body;
-            console.log(userData)
+			console.log(userData);
 
 			if (!userData.username || !userData.password || !userData.email) {
 				return res.status(400).json({ error: "Missing required data" });
@@ -81,8 +81,8 @@ class UserController {
 			if (!existingUser) {
 				return res.status(404).json({ error: "User not found" });
 			}
-			if(existingUser.id !== req.user.id){
-				return res.sendStatus(402);
+			if (existingUser.id !== req.user.id) {
+				return res.sendStatus(401);
 			}
 			const updatedUser = await userService.updateUser({
 				...userData,
@@ -96,9 +96,12 @@ class UserController {
 		}
 	}
 
-	public async deleteUser(req: Request, res: Response) {
+	public async deleteUser(req: UserRequest, res: Response) {
 		try {
 			const userId = parseInt(req.params.id, 10);
+			if (userId !== req.user.id) {
+				return res.sendStatus(401);
+			}
 
 			if (isNaN(userId)) {
 				return res.status(400).json({ error: "Invalid user ID" });
