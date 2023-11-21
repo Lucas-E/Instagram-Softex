@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import { userService } from "../service/user.service";
 import { IUser } from "../dtos/IUser";
+import { UserRequest } from "../interfaces/UserRequest";
 
 class UserController {
 	public async createNewUser(req: Request, res: Response) {
@@ -67,7 +68,7 @@ class UserController {
 		}
 	}
 
-	public async updateUser(req: Request, res: Response) {
+	public async updateUser(req: UserRequest, res: Response) {
 		try {
 			const userId = parseInt(req.params.id);
 			const userData = req.body as IUser;
@@ -80,7 +81,9 @@ class UserController {
 			if (!existingUser) {
 				return res.status(404).json({ error: "User not found" });
 			}
-
+			if(existingUser.id !== req.user.id){
+				return res.sendStatus(402);
+			}
 			const updatedUser = await userService.updateUser({
 				...userData,
 				id: userId,
