@@ -4,6 +4,7 @@ import AppDataSource from "./data-source";
 import router from "./routes/user.routes";
 import authRouter from "./routes/auth.routes";
 import postRouter from "./routes/post.routes";
+import commentRouter from "./routes/comment.routes";
 export function initApp() {
 	try {
 		const app = express();
@@ -12,6 +13,7 @@ export function initApp() {
 		app.use('/', router)
 		app.use('/', authRouter)
 		app.use('/', postRouter)
+		app.use('/', commentRouter)
 		const server = createServer(app);
 		server.listen(8080, () => {
 			console.log("Servidor Iniciado");
